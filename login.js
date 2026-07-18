@@ -11,4 +11,16 @@ window.login = async function () {
 
   try {
 
-   
+    await signInWithEmailAndPassword(auth, email, password);
+
+    alert("Admin Login Successful!");
+
+    window.location.href = "admin.html";
+
+  } catch (error) {
+
+    alert("Login Failed: " + error.message);
+
+  }
+
+};
