@@ -136,50 +136,56 @@ function viewOrders(){
 
 
 // Add Product
+async function addProduct() {
 
-function addProduct(){
+    let name = document.getElementById("productName").value;
+    let category = document.getElementById("category").value;
+    let price = document.getElementById("price").value;
+    let stock = document.getElementById("stock").value;
 
-    let name = prompt(
-        "Enter Product Name:"
-    );
+    if (name === "" || category === "" || price === "" || stock === "") {
+        alert("Please fill all fields.");
+        return;
+    }
 
+    try {
 
-    if(name != null && name != ""){
+        await addDoc(collection(db, "products"), {
+            name: name,
+            category: category,
+            price: Number(price),
+            stock: Number(stock),
+            status: Number(stock) > 10 ? "Available" : "Low Stock"
+        });
 
         totalProducts++;
-
-
-        let table =
-        document.getElementById(
-            "productTable"
-        );
-
-
-        let row =
-        table.insertRow();
-
-
-        row.innerHTML =
-
-        `
-        <td>${totalProducts}</td>
-        <td>${name}</td>
-        <td>New Category</td>
-        <td>10</td>
-        <td class="green">
-        Available
-        </td>
-        `;
-
-
         updateDashboard();
 
+        let table = document.getElementById("productTable");
+        let row = table.insertRow();
 
-        alert(
-            "Product Added Successfully!"
-        );
+        row.innerHTML = `
+            <td>${totalProducts}</td>
+            <td>${name}</td>
+            <td>${category}</td>
+            <td>${stock}</td>
+            <td class="${Number(stock) > 10 ? "green" : "red"}">
+                ${Number(stock) > 10 ? "Available" : "Low Stock"}
+            </td>
+        `;
 
+        alert("Product saved successfully!");
+
+        document.getElementById("productName").value = "";
+        document.getElementById("category").value = "";
+        document.getElementById("price").value = "";
+        document.getElementById("stock").value = "";
+
+    } catch (error) {
+        console.error(error);
+        alert("Error saving product.");
     }
+      }
 
 }
 
