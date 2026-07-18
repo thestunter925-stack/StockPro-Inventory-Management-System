@@ -146,13 +146,22 @@ async function addProduct(){
     try {
 
         await addDoc(collection(db, "products"), {
-            name: name,
-            category: category,
-            price: price,
-            stock: stock,
-            status: "Available"
+            name:name,
+            category:category,
+            price:price,
+            stock:stock,
+            status:"Available"
         });
 
+        alert("Product Saved Successfully!");
+
+    } catch(error){
+
+        alert("Error: " + error.message);
+
+    }
+
+}
         alert("Product Saved Successfully!");
 
     } catch(error) {
