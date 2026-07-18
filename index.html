@@ -87,7 +87,37 @@
 
         </section>
 
+<section class="products">
 
+    <div class="title">
+        <h2>Product Inventory</h2>
+    </div>
+
+    <div class="product-form">
+        <input type="text" id="productName" placeholder="Product Name">
+        <input type="text" id="category" placeholder="Category">
+        <input type="number" id="price" placeholder="Price">
+        <input type="number" id="stock" placeholder="Stock">
+        <button id="saveProduct">Save Product</button>
+    </div>
+
+    <table>
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Product</th>
+                <th>Category</th>
+                <th>Stock</th>
+                <th>Status</th>
+            </tr>
+        </thead>
+
+        <tbody id="productTable">
+        </tbody>
+
+    </table>
+
+</section>
 
 
         <!-- Analytics -->
@@ -134,61 +164,7 @@
 
         <!-- Products Table -->
 
-        <section class="products">
-
-            <div class="title">
-                <h2>Product Inventory</h2>
-
-                <button onclick="addProduct()">
-                    + Add Product
-                </button>
-
-            </div>
-
-
-
-            <table>
-
-                <thead>
-
-                <tr>
-                    <th>ID</th>
-                    <th>Product</th>
-                    <th>Category</th>
-                    <th>Stock</th>
-                    <th>Status</th>
-                </tr>
-
-                </thead>
-
-
-                <tbody id="productTable">
-
-                <tr>
-                    <td>101</td>
-                    <td>Laptop</td>
-                    <td>Electronics</td>
-                    <td>25</td>
-                    <td class="green">Available</td>
-                </tr>
-
-
-                <tr>
-                    <td>102</td>
-                    <td>Keyboard</td>
-                    <td>Accessories</td>
-                    <td>5</td>
-                    <td class="red">Low Stock</td>
-                </tr>
-
-
-                </tbody>
-
-
-            </table>
-
-
-        </section>
+    
 
 
 
