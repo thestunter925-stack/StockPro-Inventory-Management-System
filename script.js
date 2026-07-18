@@ -158,10 +158,20 @@ async function addProduct(){
     } catch(error){
 
         alert("Error: " + error.message);
+      
 
     }
 
 }
+
+// Make functions available to HTML
+window.addProduct = addProduct;
+window.salesReport = salesReport;
+window.viewOrders = viewOrders;
+window.viewProducts = viewProducts;
+window.checkStock = checkStock;
+
+
 
 
 // Sidebar Navigation
