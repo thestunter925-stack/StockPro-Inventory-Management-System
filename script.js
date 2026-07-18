@@ -1,3 +1,4 @@
+import { db } from "./firebase.js";
 // StockPro Inventory Management System
 // JavaScript Functionality
 
