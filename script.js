@@ -136,18 +136,32 @@ function viewOrders(){
 
 
 // Add Product
-async function addProduct() {
+async function addProduct(){
 
     let name = document.getElementById("productName").value;
     let category = document.getElementById("category").value;
-    let price = document.getElementById("price").value;
-    let stock = document.getElementById("stock").value;
+    let price = Number(document.getElementById("price").value);
+    let stock = Number(document.getElementById("stock").value);
 
-    if (name === "" || category === "" || price === "" || stock === "") {
-        alert("Please fill all fields.");
-        return;
+    try {
+
+        await addDoc(collection(db, "products"), {
+            name: name,
+            category: category,
+            price: price,
+            stock: stock,
+            status: "Available"
+        });
+
+        alert("Product Saved Successfully!");
+
+    } catch(error) {
+
+        alert("Error: " + error.message);
+
     }
 
+}
     try {
 
         await addDoc(collection(db, "products"), {
