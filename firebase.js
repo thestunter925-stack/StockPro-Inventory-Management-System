@@ -1,6 +1,6 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-app.js";
 import { getFirestore } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-firestore.js";
-
+import { getAuth } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-auth.js";
 const firebaseConfig = {
   apiKey: "AIzaSyChYuucHpUlt43ZDbFiddMGS0AQFLyHP6c",
   authDomain: "stockpro-inventory-system.firebaseapp.com",
@@ -13,5 +13,6 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 
 const db = getFirestore(app);
+const auth = getAuth(app);
 
-export { db };
+export { db, auth };
