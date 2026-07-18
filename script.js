@@ -1,5 +1,6 @@
 import { db, auth } from "./firebase.js";
 import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-auth.js";
+import { signOut } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-auth.js";
 import {
   collection,
   addDoc
@@ -203,6 +204,16 @@ menuItems.forEach(item=>{
     }
 
 });
+async function logout() {
+    try {
+        await signOut(auth);
+        window.location.href = "login.html";
+    } catch (error) {
+        alert(error.message);
+    }
+}
+
+window.logout = logout;
 
 
 
