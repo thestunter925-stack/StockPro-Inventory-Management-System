@@ -162,63 +162,11 @@ async function addProduct(){
     }
 
 }
-        alert("Product Saved Successfully!");
-
-    } catch(error) {
-
-        alert("Error: " + error.message);
-
-    }
-
-}
-    try {
-
-        await addDoc(collection(db, "products"), {
-            name: name,
-            category: category,
-            price: Number(price),
-            stock: Number(stock),
-            status: Number(stock) > 10 ? "Available" : "Low Stock"
-        });
-
-        totalProducts++;
-        updateDashboard();
-
-        let table = document.getElementById("productTable");
-        let row = table.insertRow();
-
-        row.innerHTML = `
-            <td>${totalProducts}</td>
-            <td>${name}</td>
-            <td>${category}</td>
-            <td>${stock}</td>
-            <td class="${Number(stock) > 10 ? "green" : "red"}">
-                ${Number(stock) > 10 ? "Available" : "Low Stock"}
-            </td>
-        `;
-
-        alert("Product saved successfully!");
-
-        document.getElementById("productName").value = "";
-        document.getElementById("category").value = "";
-        document.getElementById("price").value = "";
-        document.getElementById("stock").value = "";
-
-    } catch (error) {
-        console.error(error);
-        alert("Error saving product.");
-    }
-      }
-
-}
-
-
-
-
-
 
 
 // Sidebar Navigation
+
+    
 
 let menuItems =
 document.querySelectorAll(
