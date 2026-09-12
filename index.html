@@ -1,197 +1,97 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>StockPro | Inventory Management System</title>
+==================================================================================================
+                 [ TITAN-9 ARCHITECTURE // TECHNICAL ANALYSIS MATRIX CORE ]
+==================================================================================================
+ANALYSIS LAYER   --> INDICATOR TYPE    --> STRUCTURAL CONDITION         --> INTERPRETATION
+==================================================================================================
 
-<link rel="stylesheet" href="style.css">
+  1. TREND       --> Trend Structure   --> Higher Highs + Higher Lows   --> Bullish Trend Bias 📈
+  [THE TREND]    --> Trend Structure   --> Lower Highs + Lower Lows     --> Bearish Trend Bias 📉
 
-</head>
+                 --> 200-Day EMA       --> Price ABOVE 200 EMA         --> Long-Term Bullish Bias
+                 --> 200-Day EMA       --> Price BELOW 200 EMA         --> Long-Term Bearish Bias
 
-<body>
+--------------------------------------------------------------------------------------------------
 
-<div class="dashboard">
+  2. BOUNDARIES  --> Horizontal Support --> Repeated reactions near low --> Potential Support Zone
+  [THE WALLS]    --> Resistance         --> Repeated reactions near high--> Potential Resistance Zone
 
-    <!-- Sidebar -->
-    <aside class="sidebar">
+                 --> Bollinger Bands    --> Price near/above Upper Band --> Strong Extension / Momentum
+                 --> Bollinger Bands    --> Price near/below Lower Band --> Strong Extension / Weakness
 
-        <div class="logo">
-            <h2>StockPro</h2>
-            <span>Inventory System</span>
-        </div>
+                 --> Band + Reversal    --> Rejection + Confirmation    --> Potential Reversal Setup
 
-        <ul>
-            <li class="active">🏠 Dashboard</li>
-            <li>📦 Products</li>
-            <li>🛒 Orders</li>
-            <li>👥 Customers</li>
-            <li>🚚 Suppliers</li>
-            <li>📊 Analytics</li>
-            <li>⚙ Settings</li>
-        </ul>
+--------------------------------------------------------------------------------------------------
 
-    </aside>
+  3. MOMENTUM    --> RSI                --> RSI > 70                    --> Overbought / Strong Momentum
+  [THE ENERGY]   --> RSI                --> RSI < 30                    --> Oversold / Weak Momentum
 
+                 --> RSI Divergence     --> Price & RSI disagree        --> Possible Momentum Shift ⚠️
 
+                 --> MACD               --> Fast line crosses ABOVE    --> Bullish Momentum Confirmation
+                                          signal line
 
-    <!-- Main Content -->
-    <main class="main">
+                 --> MACD               --> Fast line crosses BELOW    --> Bearish Momentum Confirmation
+                                          signal line
 
-        <header class="topbar">
+--------------------------------------------------------------------------------------------------
 
-            <div>
-                <h1>Inventory Management System</h1>
-                <p id="date"></p>
-            </div>
+  4. VALIDATION  --> Volume             --> Price ↑ + Volume ↑         --> Stronger Bullish Confirmation
+  [THE TRUTH]    --> Volume             --> Price ↑ + Volume ↓         --> Possible Weakening / Caution ⚠️
 
-        <div class="admin">
-    👤 Admin
-    <button onclick="logout()">Logout</button>
-        </div>
+                 --> Volume             --> Price ↓ + Volume ↑         --> Stronger Bearish Confirmation
+                 --> Volume             --> Price ↓ + Volume ↓         --> Possible Selling Exhaustion
 
-        </header>
+--------------------------------------------------------------------------------------------------
 
+                  [ MASTER RULE ]
+          NEVER TRADE USING A SINGLE INDICATOR.
+   REQUIRE TREND + STRUCTURE + MOMENTUM + VOLUME CONFIRMATION
+                  BEFORE CONSIDERING A SETUP.
+==================================================================================================
 
+🔥 BULLISH CONFLUENCE SETUP
 
-        <!-- Dashboard Cards -->
-        <section class="cards">
+  Bullish Trend
+       +
+  Price reacts from Support
+       +
+  RSI shows recovery from oversold/weak momentum
+       +
+  MACD gives bullish confirmation
+       +
+  Volume confirms the move
+       ↓
+  BULLISH SETUP CONFIRMED 📈
 
-            <div class="card">
-                <h3>Total Products</h3>
-                <h1 id="totalProducts">250</h1>
-                <button onclick="viewProducts()">View Products</button>
-            </div>
 
+❄️ BEARISH CONFLUENCE SETUP
 
-            <div class="card">
-                <h3>Low Stock</h3>
-                <h1 id="lowStock">12</h1>
-                <button onclick="checkStock()">Check Stock</button>
-            </div>
+  Bearish Trend
+       +
+  Price reacts from Resistance
+       +
+  RSI shows weakening from overbought/strong momentum
+       +
+  MACD gives bearish confirmation
+       +
+  Volume confirms the move
+       ↓
+  BEARISH SETUP CONFIRMED 📉
 
 
-            <div class="card">
-                <h3>Today's Sales</h3>
-                <h1 id="todaySales">₹12,500</h1>
-                <button onclick="salesReport()">Sales Report</button>
-            </div>
+==================================================================================================
+                       [ RISK CONTROL LAYER ]
+==================================================================================================
 
+  Entry Signal       → Only after confirmation
+  Stop-Loss          → Based on invalidation / market structure
+  Position Size      → Based on predefined risk
+  Risk : Reward      → Evaluate before entering
+  No Confirmation    → NO TRADE / WAIT ⏸️
 
-            <div class="card">
-                <h3>Total Orders</h3>
-                <h1 id="totalOrders">85</h1>
-                <button onclick="viewOrders()">View Orders</button>
-            </div>
-
-
-        </section>
-
-<section class="products">
-
-    <div class="title">
-        <h2>Product Inventory</h2>
-    </div>
-
-    <div class="product-form">
-        <input type="text" id="productName" placeholder="Product Name">
-        <input type="text" id="category" placeholder="Category">
-        <input type="number" id="price" placeholder="Price">
-        <input type="number" id="stock" placeholder="Stock">
-        <button type="button" onclick="addProduct()">Save Product</button>
-    </div>
-
-    <table>
-        <thead>
-            <tr>
-                <th>ID</th>
-                <th>Product</th>
-                <th>Category</th>
-                <th>Stock</th>
-                <th>Status</th>
-            </tr>
-        </thead>
-
-        <tbody id="productTable">
-        </tbody>
-
-    </table>
-
-</section>
-
-
-        <!-- Analytics -->
-
-        <section class="analytics">
-
-
-            <div class="box">
-
-                <h2>Sales Overview</h2>
-
-                <div class="chart">
-                    Monthly Sales Chart
-                </div>
-
-            </div>
-
-
-
-            <div class="box">
-
-                <h2>Stock Categories</h2>
-
-                <div class="stock">
-                    Electronics : 120
-                </div>
-
-                <div class="stock">
-                    Accessories : 80
-                </div>
-
-                <div class="stock">
-                    Furniture : 50
-                </div>
-
-            </div>
-
-
-        </section>
-
-
-
-
-
-        <!-- Products Table -->
-
-    
-
-
-
-
-        <!-- Recent Orders -->
-
-        <section class="orders">
-
-            <h2>Recent Orders</h2>
-
-            <p>Order #1001 - Laptop - Completed</p>
-            <p>Order #1002 - Mouse - Processing</p>
-            <p>Order #1003 - Keyboard - Delivered</p>
-
-        </section>
-
-
-
-    </main>
-
-
-</div>
-
-
-<script type="module" src="script.js"></script>
-
-
-</body>
-</html>
+==================================================================================================
+                 [ SYSTEM PRINCIPLE ]
+     INDICATORS DO NOT PREDICT THE MARKET WITH CERTAINTY.
+     THEY HELP IDENTIFY PROBABILISTIC CONDITIONS.
+==================================================================================================
