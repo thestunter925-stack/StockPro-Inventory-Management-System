@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="StockPro - Professional Inventory Management System">
+<meta name="theme-color" content="#0f172a">
+<title>StockPro | Inventory Management System</title>
+<style>
+:root{
+  --bg:#f5f7fb;--card:#fff;--text:#172033;--muted:#64748b;--line:#e5e7eb;
+  --primary:#2563eb;--primary2:#1d4ed8;--success:#059669;--warning:#d97706;
+  --danger:#dc2626;--sidebar:#0f172a;--sidebar2:#111c31;--shadow:0 8px 30px rgba(15,23,42,.08);
+  --radius:16px;
+}
+*{box-sizing:border-box}
+html,body{margin:0;padding:0;font-family:Inter,ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;background:var(--bg);color:var(--text)}
+button,input,select,textarea{font:inherit}
+button{cursor:pointer}
+a{color:inherit}
+.hidden{display:none!important}
+.app{min-height:100vh;display:flex}
+.sidebar{position:fixed;z-index:30;left:0;top:0;bottom:0;width:250px;background:linear-gradient(180deg,var(--sidebar),var(--sidebar2));color:#fff;padding:20px 14px;display:flex;flex-direction:column;transition:.25s}
+.brand{display:flex;align-items:center;gap:12px;padding:8px 10px 24px}
+.brand-mark{width:42px;height:42px;border-radius:12px;background:linear-gradient(135deg,#3b82f6,#60a5fa);display:grid;place-items:center;font-weight:900;font-size:19px}
+.brand h1{font-size:18px;margin:0}.brand span{font-size:11px;color:#94a3b8}
+.nav{display:grid;gap:6px}.nav button{border:0;background:transparent;color:#cbd5e1;text-align:left;padding:12px;border-radius:11px;display:flex;gap:11px;align-items:center}.nav button:hover,.nav button.active{background:rgba(59,130,246,.18);color:#fff}.nav .ico{width:20px;text-align:center}
+.sidebar-footer{margin-top:auto;color:#94a3b8;font-size:12px;padding:12px}
+.main{margin-left:250px;width:calc(100% - 250px);min-width:0}
+.topbar{height:70px;background:rgba(255,255,255,.94);backdrop-filter:blur(10px);border-bottom:1px solid var(--line);display:flex;align-items:center;justify-content:space-between;padding:0 26px;position:sticky;top:0;z-index:20}
+.topbar-left{display:flex;align-items:center;gap:12px}.menu-btn{display:none}
+.topbar h2{font-size:20px;margin:0}.topbar-right{display:flex;align-items:center;gap:10px}
+.avatar{width:38px;height:38px;border-radius:50%;background:#dbeafe;color:#1d4ed8;display:grid;place-items:center;font-weight:800}
+.content{padding:26px;max-width:1500px;margin:auto}
+.page{display:none}.page.active{display:block}
+.hero{background:linear-gradient(135deg,#0f172a,#1e3a8a);color:#fff;border-radius:22px;padding:28px;margin-bottom:22px;box-shadow:var(--shadow)}
+.hero h3{font-size:26px;margin:0 0 7px}.hero p{margin:0;color:#cbd5e1;max-width:720px}
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:22px}
+.stat{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:19px;box-shadow:var(--shadow)}
+.stat .label{color:var(--muted);font-size:13px}.stat .value{font-size:29px;font-weight:800;margin-top:7px}.stat small{color:var(--muted)}
+.grid2{display:grid;grid-template-columns:1.2fr .8fr;gap:18px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow);padding:20px;margin-bottom:18px}
+.card-head{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:16px}.card h3{margin:0;font-size:17px}.muted{color:var(--muted)}
+.actions{display:flex;gap:8px;flex-wrap:wrap}
+.btn{border:1px solid var(--line);background:#fff;color:var(--text);padding:10px 14px;border-radius:10px;font-weight:700}.btn:hover{background:#f8fafc}.btn.primary{background:var(--primary);border-color:var(--primary);color:#fff}.btn.primary:hover{background:var(--primary2)}.btn.success{background:#ecfdf5;border-color:#a7f3d0;color:#047857}.btn.danger{background:#fef2f2;border-color:#fecaca;color:#b91c1c}.btn.small{padding:7px 9px;font-size:12px}
+.form-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:14px}.field{display:grid;gap:6px}.field.full{grid-column:1/-1}.field label{font-size:12px;font-weight:800;color:#475569}.field input,.field select,.field textarea{width:100%;border:1px solid #dbe1ea;border-radius:10px;padding:11px 12px;outline:0;background:#fff;color:var(--text)}.field textarea{min-height:90px;resize:vertical}.field input:focus,.field select:focus,.field textarea:focus{border-color:#60a5fa;box-shadow:0 0 0 3px rgba(37,99,235,.1)}
+.table-wrap{overflow:auto;border:1px solid var(--line);border-radius:12px}.table{width:100%;border-collapse:collapse;min-width:720px}.table th,.table td{padding:12px 13px;border-bottom:1px solid var(--line);text-align:left;font-size:13px;white-space:nowrap}.table th{background:#f8fafc;color:#475569;font-size:11px;text-transform:uppercase;letter-spacing:.04em}.table tr:last-child td{border-bottom:0}
+.badge{display:inline-flex;align-items:center;padding:5px 8px;border-radius:999px;font-size:11px;font-weight:800}.badge.green{background:#ecfdf5;color:#047857}.badge.yellow{background:#fffbeb;color:#b45309}.badge.red{background:#fef2f2;color:#b91c1c}.badge.blue{background:#eff6ff;color:#1d4ed8}.badge.gray{background:#f1f5f9;color:#475569}
+.search-row{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:14px}.search-row input{flex:1;min-width:180px;border:1px solid #dbe1ea;border-radius:10px;padding:11px 12px}
+.kpi-list{display:grid;gap:12px}.kpi{display:flex;justify-content:space-between;gap:10px;padding:12px;background:#f8fafc;border-radius:10px}.bar{height:9px;background:#e2e8f0;border-radius:99px;overflow:hidden;margin-top:7px}.bar i{display:block;height:100%;background:#2563eb;border-radius:99px}
+.empty{padding:32px;text-align:center;color:var(--muted)}.notice{padding:12px 14px;border-radius:11px;background:#eff6ff;color:#1e40af;font-size:13px;margin-bottom:14px}
+.toast{position:fixed;right:20px;bottom:20px;z-index:100;padding:13px 16px;border-radius:12px;background:#0f172a;color:#fff;box-shadow:0 10px 35px rgba(0,0,0,.2);opacity:0;transform:translateY(15px);pointer-events:none;transition:.25s}.toast.show{opacity:1;transform:none}
+.modal-backdrop{position:fixed;inset:0;background:rgba(2,6,23,.55);z-index:80;display:none;align-items:center;justify-content:center;padding:18px}.modal-backdrop.open{display:flex}.modal{width:min(650px,100%);max-height:90vh;overflow:auto;background:#fff;border-radius:18px;padding:22px;box-shadow:0 30px 80px rgba(0,0,0,.25)}.modal-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:18px}.close{border:0;background:#f1f5f9;border-radius:9px;width:36px;height:36px;font-size:20px}
+.login{min-height:100vh;display:grid;place-items:center;background:radial-gradient(circle at top,#dbeafe,#f8fafc 55%);padding:20px}.login-card{width:min(430px,100%);background:#fff;border:1px solid var(--line);border-radius:22px;padding:28px;box-shadow:0 20px 60px rgba(15,23,42,.12)}.login-logo{display:flex;align-items:center;gap:12px;margin-bottom:24px}.login-logo .brand-mark{color:#fff}.login-card h2{margin:0 0 8px}.login-card p{color:var(--muted);font-size:14px}.login-card .field{margin-top:14px}.login-card .btn{width:100%;margin-top:16px}
+.chart{display:flex;align-items:end;gap:10px;height:190px;padding:10px 4px 0}.col{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:end;height:100%;gap:7px}.col i{width:100%;max-width:42px;background:linear-gradient(180deg,#60a5fa,#2563eb);border-radius:8px 8px 3px 3px;min-height:4px}.col span{font-size:10px;color:var(--muted)}
+@media(max-width:1050px){.stats{grid-template-columns:repeat(2,1fr)}.grid2{grid-template-columns:1fr}}
+@media(max-width:760px){
+ .sidebar{transform:translateX(-100%);width:265px}.sidebar.open{transform:none}.main{margin-left:0;width:100%}.menu-btn{display:grid;place-items:center;border:0;background:#f1f5f9;width:40px;height:40px;border-radius:10px;font-size:20px}.topbar{padding:0 14px}.content{padding:15px}.stats{grid-template-columns:1fr 1fr}.form-grid{grid-template-columns:1fr}.field.full{grid-column:auto}.hero{padding:21px}.hero h3{font-size:22px}.topbar h2{font-size:17px}
+}
+@media(max-width:460px){.stats{grid-template-columns:1fr}.topbar-right .muted{display:none}}
+</style>
+</head>
+<body>
+
+<div id="loginView" class="login">
+  <div class="login-card">
+    <div class="login-logo">
+      <div class="brand-mark">SP</div>
+      <div><strong>StockPro</strong><div class="muted" style="font-size:11px">Inventory Management</div></div>
+    </div>
+    <h2>Admin Sign In</h2>
+    <p>Manage products, stock, suppliers, orders and inventory activity from one dashboard.</p>
+    <div class="field"><label>Email</label><input id="loginEmail" type="email" value="admin@stockpro.local" autocomplete="username"></div>
+    <div class="field"><label>Password</label><input id="loginPassword" type="password" value="admin123" autocomplete="current-password"></div>
+    <button class="btn primary" onclick="login()">Sign in</button>
+    <div class="notice" style="margin-top:14px">Demo access: <b>admin@stockpro.local</b> / <b>admin123</b>. Change this before using the system for real business data.</div>
+  </div>
+</div>
+
+<div id="app" class="app hidden">
+  <aside id="sidebar" class="sidebar">
+    <div class="brand">
+      <div class="brand-mark">SP</div>
+      <div><h1>StockPro</h1><span>Inventory Management</span></div>
+    </div>
+    <nav class="nav">
+      <button data-page="dashboard" onclick="showPage('dashboard')"><span class="ico">⌂</span>Dashboard</button>
+      <button data-page="products" onclick="showPage('products')"><span class="ico">▣</span>Products</button>
+      <button data-page="categories" onclick="showPage('categories')"><span class="ico">◈</span>Categories</button>
+      <button data-page="suppliers" onclick="showPage('suppliers')"><span class="ico">♟</span>Suppliers</button>
+      <button data-page="orders" onclick="showPage('orders')"><span class="ico">▤</span>Orders</button>
+      <button data-page="stock" onclick="showPage('stock')"><span class="ico">↕</span>Stock Movements</button>
+      <button data-page="reports" onclick="showPage('reports')"><span class="ico">▥</span>Reports</button>
+      <button data-page="settings" onclick="showPage('settings')"><span class="ico">⚙</span>Settings</button>
+    </nav>
+    <div class="sidebar-footer">Local demo database • v1.0</div>
+  </aside>
+
+  <main class="main">
+    <header class="topbar">
+      <div class="topbar-left"><button class="menu-btn" onclick="toggleSidebar()">☰</button><h2 id="pageTitle">Dashboard</h2></div>
+      <div class="topbar-right"><span class="muted" id="today"></span><div class="avatar">A</div></div>
+    </header>
+
+    <div class="content">
+      <section id="page-dashboard" class="page active">
+        <div class="hero"><h3>Inventory Command Center</h3><p>Track products, stock levels, suppliers and orders with a clean admin-focused workflow.</p></div>
+        <div class="stats">
+          <div class="stat"><div class="label">Total Products</div><div class="value" id="statProducts">0</div><small>Items in catalog</small></div>
+          <div class="stat"><div class="label">Inventory Value</div><div class="value" id="statValue">₹0</div><small>Based on purchase cost</small></div>
+          <div class="stat"><div class="label">Low Stock</div><div class="value" id="statLow">0</div><small>Needs attention</small></div>
+          <div class="stat"><div class="label">Open Orders</div><div class="value" id="statOrders">0</div><small>Pending purchase orders</small></div>
+        </div>
+        <div class="grid2">
+          <div class="card"><div class="card-head"><h3>Recent Inventory Activity</h3><button class="btn small" onclick="showPage('stock')">View all</button></div><div id="recentActivity"></div></div>
+          <div class="card"><div class="card-head"><h3>Stock Health</h3></div><div id="stockHealth"></div></div>
+        </div>
+      </section>
+
+      <section id="page-products" class="page">
+        <div class="card">
+          <div class="card-head"><div><h3>Products</h3><div class="muted">Manage your inventory catalog.</div></div><button class="btn primary" onclick="openProductModal()">+ Add Product</button></div>
+          <div class="search-row"><input id="productSearch" placeholder="Search name, SKU or category..." oninput="renderProducts()"></div>
+          <div class="table-wrap"><table class="table"><thead><tr><th>Product</th><th>SKU</th><th>Category</th><th>Cost</th><th>Price</th><th>Stock</th><th>Status</th><th>Actions</th></tr></thead><tbody id="productsTable"></tbody></table></div>
+        </div>
+      </section>
+
+      <section id="page-categories" class="page">
+        <div class="card">
+          <div class="card-head"><div><h3>Categories</h3><div class="muted">Organize products by category.</div></div><button class="btn primary" onclick="openCategoryModal()">+ Add Category</button></div>
+          <div class="table-wrap"><table class="table"><thead><tr><th>Name</th><th>Description</th><th>Products</th><th>Actions</th></tr></thead><tbody id="categoriesTable"></tbody></table></div>
+        </div>
+      </section>
+
+      <section id="page-suppliers" class="page">
+        <div class="card">
+          <div class="card-head"><div><h3>Suppliers</h3><div class="muted">Keep supplier contact information organized.</div></div><button class="btn primary" onclick="openSupplierModal()">+ Add Supplier</button></div>
+          <div class="table-wrap"><table class="table"><thead><tr><th>Supplier</th><th>Contact</th><th>Email</th><th>Phone</th><th>Products</th><th>Actions</th></tr></thead><tbody id="suppliersTable"></tbody></table></div>
+        </div>
+      </section>
+
+      <section id="page-orders" class="page">
+        <div class="card">
+          <div class="card-head"><div><h3>Purchase Orders</h3><div class="muted">Create and track incoming stock.</div></div><button class="btn primary" onclick="openOrderModal()">+ New Order</button></div>
+          <div class="table-wrap"><table class="table"><thead><tr><th>Order</th><th>Supplier</th><th>Product</th><th>Qty</th><th>Total</th><th>Status</th><th>Actions</th></tr></thead><tbody id="ordersTable"></tbody></table></div>
+        </div>
+      </section>
+
+      <section id="page-stock" class="page">
+        <div class="card">
+          <div class="card-head"><div><h3>Stock Movements</h3><div class="muted">Record stock-in and stock-out activity.</div></div><button class="btn primary" onclick="openStockModal()">+ Record Movement</button></div>
+          <div class="table-wrap"><table class="table"><thead><tr><th>Date</th><th>Product</th><th>Type</th><th>Quantity</th><th>Note</th><th>Stock After</th></tr></thead><tbody id="stockTable"></tbody></table></div>
+        </div>
+      </section>
+
+      <section id="page-reports" class="page">
+        <div class="grid2">
+          <div class="card"><div class="card-head"><h3>Inventory by Category</h3><button class="btn small" onclick="exportCSV()">Export CSV</button></div><div id="categoryReport"></div></div>
+          <div class="card"><div class="card-head"><h3>Stock Distribution</h3></div><div id="distributionReport"></div></div>
+        </div>
+        <div class="card"><div class="card-head"><h3>Data Backup</h3></div><p class="muted">Download a complete JSON backup of the current local database or restore one later.</p><div class="actions"><button class="btn primary" onclick="downloadBackup()">Download Backup</button><label class="btn">Restore Backup<input type="file" accept=".json" onchange="restoreBackup(event)" hidden></label><button class="btn danger" onclick="resetData()">Reset Demo Data</button></div></div>
+      </section>
+
+      <section id="page-settings" class="page">
+        <div class="card">
+          <div class="card-head"><div><h3>Settings</h3><div class="muted">Application preferences for this browser.</div></div></div>
+          <div class="form-grid">
+            <div class="field"><label>Business Name</label><input id="businessName" value="StockPro Inventory"></div>
+            <div class="field"><label>Currency</label><select id="currency"><option value="₹">INR (₹)</option><option value="$">USD ($)</option><option value="€">EUR (€)</option></select></div>
+            <div class="field"><label>Low Stock Threshold</label><input id="threshold" type="number" min="0" value="10"></div>
+            <div class="field"><label>Admin Email</label><input id="adminEmail" type="email" value="admin@stockpro.local"></div>
+          </div>
+          <div class="actions" style="margin-top:18px"><button class="btn primary" onclick="saveSettings()">Save Settings</button><button class="btn" onclick="logout()">Logout</button></div>
+        </div>
+      </section>
+    </div>
+  </main>
+</div>
+
+<div id="modalBackdrop" class="modal-backdrop" onclick="if(event.target===this)closeModal()"><div id="modal" class="modal"></div></div>
+<div id="toast" class="toast"></div>
+
+<script>
+(function(){
+"use strict";
+const KEY="stockpro_inventory_v1";
+const defaultDB={
+ settings:{businessName:"StockPro Inventory",currency:"₹",threshold:10,adminEmail:"admin@stockpro.local"},
+ categories:[
+  {id:"c1",name:"Electronics",description:"Electronic products and accessories"},
+  {id:"c2",name:"Office",description:"Office and stationery products"},
+  {id:"c3",name:"Tools",description:"Tools and maintenance equipment"}
+ ],
+ suppliers:[
+  {id:"s1",name:"Tech Supply Co.",contact:"Ravi Kumar",email:"ravi@example.com",phone:"+91 9000000000"},
+  {id:"s2",name:"Office World",contact:"Anita Sharma",email:"anita@example.com",phone:"+91 9111111111"}
+ ],
+ products:[
+  {id:"p1",name:"Wireless Keyboard",sku:"ELEC-001",category:"Electronics",cost:650,price:999,stock:24},
+  {id:"p2",name:"USB-C Cable",sku:"ELEC-002",category:"Electronics",cost:120,price:249,stock:7},
+  {id:"p3",name:"Notebook A5",sku:"OFF-001",category:"Office",cost:45,price:80,stock:65},
+  {id:"p4",name:"Screwdriver Set",sku:"TOOL-001",category:"Tools",cost:300,price:499,stock:12}
+ ],
+ orders:[
+  {id:"PO-1001",supplier:"Tech Supply Co.",product:"Wireless Keyboard",qty:20,total:13000,status:"Pending",date:"2026-09-10"}
+ ],
+ movements:[
+  {id:"m1",date:"2026-09-17",product:"Wireless Keyboard",type:"IN",qty:24,note:"Opening stock",after:24},
+  {id:"m2",date:"2026-09-17",product:"USB-C Cable",type:"IN",qty:7,note:"Opening stock",after:7},
+  {id:"m3",date:"2026-09-17",product:"Notebook A5",type:"IN",qty:65,note:"Opening stock",after:65},
+  {id:"m4",date:"2026-09-17",product:"Screwdriver Set",type:"IN",qty:12,note:"Opening stock",after:12}
+ ]
+};
+let db=loadDB();
+let editing={type:null,id:null};
+
+function clone(x){return JSON.parse(JSON.stringify(x))}
+function loadDB(){try{const raw=localStorage.getItem(KEY);return raw?Object.assign(clone(defaultDB),JSON.parse(raw)):clone(defaultDB)}catch(e){return clone(defaultDB)}}
+function saveDB(){localStorage.setItem(KEY,JSON.stringify(db))}
+function esc(v){return String(v??"").replace(/[&<>"']/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"}[m]))}
+function money(n){return (db.settings.currency||"₹")+Number(n||0).toLocaleString("en-IN",{maximumFractionDigits:2})}
+function uid(prefix){return prefix+"_"+Date.now().toString(36)+Math.random().toString(36).slice(2,6)}
+function toast(msg){const el=document.getElementById("toast");el.textContent=msg;el.classList.add("show");clearTimeout(window.__toast);window.__toast=setTimeout(()=>el.classList.remove("show"),2200)}
+function categoryNames(){return db.categories.map(c=>c.name)}
+function productByName(name){return db.products.find(p=>p.name===name)}
+function statusBadge(p){const t=Number(db.settings.threshold)||10;if(p.stock<=0)return '<span class="badge red">Out of stock</span>';if(p.stock<=t)return '<span class="badge yellow">Low stock</span>';return '<span class="badge green">In stock</span>'}
+function today(){return new Date().toISOString().slice(0,10)}
+function refresh(){
+ document.getElementById("today").textContent=new Date().toLocaleDateString("en-IN",{day:"2-digit",month:"short",year:"numeric"});
+ document.getElementById("businessName").value=db.settings.businessName;
+ document.getElementById("currency").value=db.settings.currency;
+ document.getElementById("threshold").value=db.settings.threshold;
+ document.getElementById("adminEmail").value=db.settings.adminEmail;
+ renderDashboard();renderProducts();renderCategories();renderSuppliers();renderOrders();renderStock();renderReports();
+}
+window.showPage=function(page){
+ document.querySelectorAll(".page").forEach(x=>x.classList.remove("active"));
+ const el=document.getElementById("page-"+page);if(el)el.classList.add("active");
+ document.querySelectorAll(".nav button").forEach(x=>x.classList.toggle("active",x.dataset.page===page));
+ const titles={dashboard:"Dashboard",products:"Products",categories:"Categories",suppliers:"Suppliers",orders:"Purchase Orders",stock:"Stock Movements",reports:"Reports",settings:"Settings"};
+ document.getElementById("pageTitle").textContent=titles[page]||"Dashboard";
+ document.getElementById("sidebar").classList.remove("open");
+ window.scrollTo({top:0,behavior:"smooth"});
+}
+window.toggleSidebar=function(){document.getElementById("sidebar").classList.toggle("open")}
+function renderDashboard(){
+ const total=db.products.length,value=db.products.reduce((s,p)=>s+p.cost*p.stock,0),low=db.products.filter(p=>p.stock<=db.settings.threshold).length,open=db.orders.filter(o=>o.status==="Pending").length;
+ document.getElementById("statProducts").textContent=total;document.getElementById("statValue").textContent=money(value);document.getElementById("statLow").textContent=low;document.getElementById("statOrders").textContent=open;
+ const acts=db.movements.slice().reverse().slice(0,6);
+ document.getElementById("recentActivity").innerHTML=acts.length?acts.map(a=>`<div style="display:flex;justify-content:space-between;gap:10px;padding:10px 0;border-bottom:1px solid var(--line)"><div><b>${esc(a.product)}</b><div class="muted" style="font-size:12px">${esc(a.note||"Stock movement")} • ${esc(a.date)}</div></div><span class="badge ${a.type==="IN"?"green":"blue"}">${a.type==="IN"?"+":"-"}${a.qty}</span></div>`).join(""):'<div class="empty">No activity yet.</div>';
+ const inStock=db.products.filter(p=>p.stock>db.settings.threshold).length,lowStock=db.products.filter(p=>p.stock>0&&p.stock<=db.settings.threshold).length,out=db.products.filter(p=>p.stock<=0).length,totalP=Math.max(1,db.products.length);
+ document.getElementById("stockHealth").innerHTML=[["Healthy",inStock,"green"],["Low stock",lowStock,"yellow"],["Out of stock",out,"red"]].map(x=>`<div style="margin:13px 0"><div style="display:flex;justify-content:space-between"><span>${x[0]}</span><b>${x[1]}</b></div><div class="bar"><i style="width:${Math.round(x[1]/totalP*100)}%"></i></div></div>`).join("");
+}
+window.renderProducts=function(){
+ const q=(document.getElementById("productSearch")?.value||"").toLowerCase();
+ const rows=db.products.filter(p=>[p.name,p.sku,p.category].join(" ").toLowerCase().includes(q));
+ document.getElementById("productsTable").innerHTML=rows.length?rows.map(p=>`<tr><td><b>${esc(p.name)}</b></td><td>${esc(p.sku)}</td><td>${esc(p.category)}</td><td>${money(p.cost)}</td><td>${money(p.price)}</td><td><b>${p.stock}</b></td><td>${statusBadge(p)}</td><td><div class="actions"><button class="btn small" onclick="openProductModal('${p.id}')">Edit</button><button class="btn small danger" onclick="deleteItem('products','${p.id}')">Delete</button></div></td></tr>`).join(""):'<tr><td colspan="8"><div class="empty">No products found.</div></td></tr>';
+}
+window.renderCategories=function(){
+ document.getElementById("categoriesTable").innerHTML=db.categories.length?db.categories.map(c=>`<tr><td><b>${esc(c.name)}</b></td><td>${esc(c.description)}</td><td>${db.products.filter(p=>p.category===c.name).length}</td><td><div class="actions"><button class="btn small" onclick="openCategoryModal('${c.id}')">Edit</button><button class="btn small danger" onclick="deleteItem('categories','${c.id}')">Delete</button></div></td></tr>`).join(""):'<tr><td colspan="4"><div class="empty">No categories.</div></td></tr>';
+}
+window.renderSuppliers=function(){
+ document.getElementById("suppliersTable").innerHTML=db.suppliers.length?db.suppliers.map(s=>`<tr><td><b>${esc(s.name)}</b></td><td>${esc(s.contact)}</td><td>${esc(s.email)}</td><td>${esc(s.phone)}</td><td>${db.products.filter(p=>p.supplier===s.name).length}</td><td><div class="actions"><button class="btn small" onclick="openSupplierModal('${s.id}')">Edit</button><button class="btn small danger" onclick="deleteItem('suppliers','${s.id}')">Delete</button></div></td></tr>`).join(""):'<tr><td colspan="6"><div class="empty">No suppliers.</div></td></tr>';
+}
+window.renderOrders=function(){
+ document.getElementById("ordersTable").innerHTML=db.orders.length?db.orders.slice().reverse().map(o=>`<tr><td><b>${esc(o.id)}</b><div class="muted" style="font-size:11px">${esc(o.date)}</div></td><td>${esc(o.supplier)}</td><td>${esc(o.product)}</td><td>${o.qty}</td><td>${money(o.total)}</td><td><span class="badge ${o.status==="Received"?"green":o.status==="Cancelled"?"red":"yellow"}">${esc(o.status)}</span></td><td>${o.status==="Pending"?`<button class="btn small success" onclick="receiveOrder('${o.id}')">Receive</button>`:`<button class="btn small danger" onclick="deleteItem('orders','${o.id}')">Delete</button>`}</td></tr>`).join(""):'<tr><td colspan="7"><div class="empty">No purchase orders.</div></td></tr>';
+}
+window.renderStock=function(){
+ document.getElementById("stockTable").innerHTML=db.movements.length?db.movements.slice().reverse().map(m=>`<tr><td>${esc(m.date)}</td><td><b>${esc(m.product)}</b></td><td><span class="badge ${m.type==="IN"?"green":"blue"}">${m.type==="IN"?"Stock In":"Stock Out"}</span></td><td>${m.qty}</td><td>${esc(m.note||"—")}</td><td>${m.after}</td></tr>`).join(""):'<tr><td colspan="6"><div class="empty">No movements.</div></td></tr>';
+}
+function renderReports(){
+ const total=Math.max(1,db.products.reduce((s,p)=>s+p.stock,0));
+ document.getElementById("categoryReport").innerHTML=db.categories.map(c=>{const ps=db.products.filter(p=>p.category===c.name),qty=ps.reduce((s,p)=>s+p.stock,0);return `<div style="margin:14px 0"><div style="display:flex;justify-content:space-between"><span>${esc(c.name)}</span><b>${qty}</b></div><div class="bar"><i style="width:${Math.round(qty/total*100)}%"></i></div></div>`}).join("")||'<div class="empty">No category data.</div>';
+ const vals=[["In stock",db.products.filter(p=>p.stock>db.settings.threshold).length],["Low stock",db.products.filter(p=>p.stock>0&&p.stock<=db.settings.threshold).length],["Out of stock",db.products.filter(p=>p.stock<=0).length]];
+ document.getElementById("distributionReport").innerHTML=vals.map(x=>`<div class="kpi"><span>${x[0]}</span><b>${x[1]}</b></div>`).join("");
+}
+function openModal(title,body,submit){document.getElementById("modal").innerHTML=`<div class="modal-head"><div><h3 style="margin:0">${title}</h3></div><button class="close" onclick="closeModal()">×</button></div>${body}<div class="actions" style="margin-top:18px;justify-content:flex-end"><button class="btn" onclick="closeModal()">Cancel</button><button class="btn primary" onclick="${submit}">Save</button></div>`;document.getElementById("modalBackdrop").classList.add("open")}
+window.closeModal=function(){document.getElementById("modalBackdrop").classList.remove("open")}
+window.openProductModal=function(id){
+ const p=db.products.find(x=>x.id===id)||{name:"",sku:"",category:db.categories[0]?.name||"",cost:0,price:0,stock:0};
+ editing={type:"product",id:id||null};
+ const opts=db.categories.map(c=>`<option ${c.name===p.category?"selected":""}>${esc(c.name)}</option>`).join("");
+ openModal(id?"Edit Product":"Add Product",`<div class="form-grid"><div class="field"><label>Product Name</label><input id="fName" value="${esc(p.name)}"></div><div class="field"><label>SKU</label><input id="fSku" value="${esc(p.sku)}"></div><div class="field"><label>Category</label><select id="fCategory">${opts}</select></div><div class="field"><label>Cost Price</label><input id="fCost" type="number" min="0" value="${p.cost}"></div><div class="field"><label>Selling Price</label><input id="fPrice" type="number" min="0" value="${p.price}"></div><div class="field"><label>Opening Stock</label><input id="fStock" type="number" min="0" value="${p.stock}"></div></div>`,"saveProduct()");
+}
+window.saveProduct=function(){
+ const name=document.getElementById("fName").value.trim(),sku=document.getElementById("fSku").value.trim(),category=document.getElementById("fCategory").value,cost=Number(document.getElementById("fCost").value),price=Number(document.getElementById("fPrice").value),stock=Number(document.getElementById("fStock").value);
+ if(!name||!sku||!category||cost<0||price<0||stock<0)return toast("Please enter valid product details.");
+ if(db.products.some(p=>p.sku.toLowerCase()===sku.toLowerCase()&&p.id!==editing.id))return toast("SKU already exists.");
+ if(editing.id){const p=productById(editing.id);const diff=stock-p.stock;p.name=name;p.sku=sku;p.category=category;p.cost=cost;p.price=price;p.stock=stock;if(diff)db.movements.push({id:uid("m"),date:today(),product:name,type:diff>0?"IN":"OUT",qty:Math.abs(diff),note:"Manual product update",after:stock})}
+ else{db.products.push({id:uid("p"),name,sku,category,cost,price,stock});if(stock)db.movements.push({id:uid("m"),date:today(),product:name,type:"IN",qty:stock,note:"Opening stock",after:stock})}
+ saveDB();closeModal();refresh();toast("Product saved.");
+}
+function productById(id){return db.products.find(p=>p.id===id)}
+window.openCategoryModal=function(id){
+ const c=db.categories.find(x=>x.id===id)||{name:"",description:""};editing={type:"category",id:id||null};
+ openModal(id?"Edit Category":"Add Category",`<div class="form-grid"><div class="field"><label>Name</label><input id="fCatName" value="${esc(c.name)}"></div><div class="field"><label>Description</label><input id="fCatDesc" value="${esc(c.description)}"></div></div>`,"saveCategory()");
+}
+window.saveCategory=function(){const name=document.getElementById("fCatName").value.trim(),description=document.getElementById("fCatDesc").value.trim();if(!name)return toast("Category name is required.");if(db.categories.some(c=>c.name.toLowerCase()===name.toLowerCase()&&c.id!==editing.id))return toast("Category already exists.");if(editing.id){const c=db.categories.find(x=>x.id===editing.id),old=c.name;c.name=name;c.description=description;db.products.forEach(p=>{if(p.category===old)p.category=name})}else db.categories.push({id:uid("c"),name,description});saveDB();closeModal();refresh();toast("Category saved.")}
+window.openSupplierModal=function(id){
+ const s=db.suppliers.find(x=>x.id===id)||{name:"",contact:"",email:"",phone:""};editing={type:"supplier",id:id||null};
+ openModal(id?"Edit Supplier":"Add Supplier",`<div class="form-grid"><div class="field"><label>Supplier Name</label><input id="fSupName" value="${esc(s.name)}"></div><div class="field"><label>Contact Person</label><input id="fSupContact" value="${esc(s.contact)}"></div><div class="field"><label>Email</label><input id="fSupEmail" type="email" value="${esc(s.email)}"></div><div class="field"><label>Phone</label><input id="fSupPhone" value="${esc(s.phone)}"></div></div>`,"saveSupplier()");
+}
+window.saveSupplier=function(){const name=document.getElementById("fSupName").value.trim(),contact=document.getElementById("fSupContact").value.trim(),email=document.getElementById("fSupEmail").value.trim(),phone=document.getElementById("fSupPhone").value.trim();if(!name)return toast("Supplier name is required.");if(editing.id){Object.assign(db.suppliers.find(s=>s.id===editing.id),{name,contact,email,phone})}else db.suppliers.push({id:uid("s"),name,contact,email,phone});saveDB();closeModal();refresh();toast("Supplier saved.")}
+window.openOrderModal=function(){
+ const po=db.products[0],sup=db.suppliers[0];editing={type:"order",id:null};
+ openModal("New Purchase Order",`<div class="form-grid"><div class="field"><label>Supplier</label><select id="fOrderSupplier">${db.suppliers.map(s=>`<option>${esc(s.name)}</option>`).join("")}</select></div><div class="field"><label>Product</label><select id="fOrderProduct">${db.products.map(p=>`<option value="${esc(p.name)}">${esc(p.name)}</option>`).join("")}</select></div><div class="field"><label>Quantity</label><input id="fOrderQty" type="number" min="1" value="10"></div><div class="field"><label>Unit Cost</label><input id="fOrderCost" type="number" min="0" value="${po?.cost||0}"></div></div>`,"saveOrder()");
+}
+window.saveOrder=function(){const supplier=document.getElementById("fOrderSupplier").value,product=document.getElementById("fOrderProduct").value,qty=Number(document.getElementById("fOrderQty").value),cost=Number(document.getElementById("fOrderCost").value);if(!product||qty<1||cost<0)return toast("Enter valid order details.");db.orders.push({id:"PO-"+Math.floor(1000+Math.random()*9000),supplier,product,qty,total:qty*cost,status:"Pending",date:today()});saveDB();closeModal();refresh();toast("Purchase order created.")}
+window.receiveOrder=function(id){const o=db.orders.find(x=>x.id===id);if(!o)return;const p=productByName(o.product);if(!p)return toast("Product no longer exists.");p.stock+=o.qty;o.status="Received";db.movements.push({id:uid("m"),date:today(),product:p.name,type:"IN",qty:o.qty,note:"Received "+o.id,after:p.stock});saveDB();refresh();toast("Order received and stock updated.")}
+window.openStockModal=function(){
+ openModal("Record Stock Movement",`<div class="form-grid"><div class="field"><label>Product</label><select id="fMoveProduct">${db.products.map(p=>`<option>${esc(p.name)}</option>`).join("")}</select></div><div class="field"><label>Type</label><select id="fMoveType"><option value="IN">Stock In</option><option value="OUT">Stock Out</option></select></div><div class="field"><label>Quantity</label><input id="fMoveQty" type="number" min="1" value="1"></div><div class="field"><label>Note</label><input id="fMoveNote" placeholder="Reason or reference"></div></div>`,"saveMovement()");
+}
+window.saveMovement=function(){const product=productByName(document.getElementById("fMoveProduct").value),type=document.getElementById("fMoveType").value,qty=Number(document.getElementById("fMoveQty").value),note=document.getElementById("fMoveNote").value.trim();if(!product||qty<1)return toast("Enter valid movement details.");if(type==="OUT"&&qty>product.stock)return toast("Not enough stock available.");product.stock=type==="IN"?product.stock+qty:product.stock-qty;db.movements.push({id:uid("m"),date:today(),product:product.name,type,qty,note:note||"Manual movement",after:product.stock});saveDB();closeModal();refresh();toast("Stock movement recorded.")}
+window.deleteItem=function(type,id){
+ if(!confirm("Delete this record?"))return;
+ const arr=db[type];const i=arr.findIndex(x=>x.id===id);if(i<0)return;arr.splice(i,1);saveDB();refresh();toast("Record deleted.");
+}
+window.saveSettings=function(){db.settings.businessName=document.getElementById("businessName").value.trim()||"StockPro Inventory";db.settings.currency=document.getElementById("currency").value;db.settings.threshold=Math.max(0,Number(document.getElementById("threshold").value)||0);db.settings.adminEmail=document.getElementById("adminEmail").value.trim()||"admin@stockpro.local";saveDB();refresh();toast("Settings saved.");}
+window.downloadBackup=function(){const blob=new Blob([JSON.stringify(db,null,2)],{type:"application/json"}),a=document.createElement("a");a.href=URL.createObjectURL(blob);a.download="stockpro-backup-"+today()+".json";a.click();URL.revokeObjectURL(a.href);toast("Backup downloaded.")}
+window.restoreBackup=function(e){const f=e.target.files[0];if(!f)return;const r=new FileReader();r.onload=function(){try{const x=JSON.parse(r.result);if(!x.products||!x.categories||!x.suppliers)throw new Error();db=x;saveDB();refresh();toast("Backup restored.")}catch(err){toast("Invalid backup file.")}};r.readAsText(f);e.target.value=""}
+window.resetData=function(){if(!confirm("Reset all local data to the original demo dataset?"))return;db=clone(defaultDB);saveDB();refresh();toast("Demo data restored.")}
+window.exportCSV=function(){const rows=[["Name","SKU","Category","Cost","Price","Stock","Status"],...db.products.map(p=>[p.name,p.sku,p.category,p.cost,p.price,p.stock,p.stock<=0?"Out of stock":p.stock<=db.settings.threshold?"Low stock":"In stock"])];const csv=rows.map(r=>r.map(v=>`"${String(v).replace(/"/g,'""')}"`).join(",")).join("\n");const a=document.createElement("a");a.href=URL.createObjectURL(new Blob([csv],{type:"text/csv"}));a.download="stockpro-inventory-"+today()+".csv";a.click();toast("CSV exported.")}
+window.login=function(){const e=document.getElementById("loginEmail").value.trim().toLowerCase(),p=document.getElementById("loginPassword").value;if(e==="admin@stockpro.local"&&p==="admin123"){sessionStorage.setItem("stockpro_auth","1");document.getElementById("loginView").classList.add("hidden");document.getElementById("app").classList.remove("hidden");refresh();showPage("dashboard")}else toast("Invalid demo credentials.")}
+window.logout=function(){sessionStorage.removeItem("stockpro_auth");document.getElementById("app").classList.add("hidden");document.getElementById("loginView").classList.remove("hidden")}
+document.getElementById("loginPassword").addEventListener("keydown",e=>{if(e.key==="Enter")login()});
+if(sessionStorage.getItem("stockpro_auth")==="1"){document.getElementById("loginView").classList.add("hidden");document.getElementById("app").classList.remove("hidden");refresh()}
+})();
+</script>
+</body>
+</html>
